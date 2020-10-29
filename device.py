@@ -46,18 +46,15 @@ class Device:
     def subscribe(self):
         for property in self.properties:
             if self.properties[property]['settable']:
-                print(self.basicTopic+property)
                 self.client.subscribe(self.basicTopic+property)
                 if not self.properties[property]['onResetSend']:
                     self.client.check_msg()
         for external in self.subscribeExternal:
-            print(external)
             self.client.subscribe(external)
 
     def sendInfo(self,nothing=0):
         self.readInfo()
         for property in self.properties:
-            print(property + ': ' + str(self.properties[property]['value']))
             self.client.publish(self.basicTopic + property, str(self.properties[property]['value']))
 
     def readInfo(self):

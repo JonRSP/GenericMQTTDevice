@@ -30,8 +30,8 @@ class Device:
 
     def setup(self):
         self.properties = {'connection':{'value':'Active','settable':True, 'onResetSend':True, 'action':self.msgRecieved}}
-        self.subscribeExternal = {}
-        self.readFunctions = []
+        self.subscribeExternal = {'path/to/topic':{'action':self.foo}}
+        self.readFunctions = [self.readFoo1, self.readFoo2]
 
     def msgCallBack(self, topic, msg):
         decodedMsg = msg.decode("utf-8")
@@ -56,11 +56,9 @@ class Device:
 
     def sendInfo(self,nothing=0):
         self.readInfo()
-        #self.client.publish(self.basicTopic + 'conexao', 'Ativa')
         for property in self.properties:
             print(property + ': ' + str(self.properties[property]['value']))
             self.client.publish(self.basicTopic + property, str(self.properties[property]['value']))
-        #self.WDT.feed()
 
     def readInfo(self):
         for function in self.readFunctions:
